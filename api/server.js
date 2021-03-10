@@ -42,4 +42,41 @@ server.post("/api/users", async (req, res) => {
   }
 });
 
+//  DELETE | /api/users/:id | Removes the user with the specified `id` and returns the deleted user.
+
+server.delete("/api/users/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.remove(id);
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ message: "unknown id " });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// | PUT    | /api/users/:id | Updates the user with the specified `id` using data from the `request body`. Returns he modified user |
+server.put("/api/users/:id", async (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+
+  if (!changes.name || !changes.bio) {
+    res.status(400).json({ message: "Must include name and bio" });
+  } else {
+    try {
+      const updatedUser = await User.update(id, changes);
+      if (updatedUser) {
+        res.status(200).json({ updatedUser });
+      } else {
+        res.status(400).json({ message: "unknown id" });
+      }
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+});
+
 module.exports = server; // EXPORT YOUR SERVER instead of {}
