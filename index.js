@@ -4,5 +4,5 @@ const port = 5000;
 
 // START YOUR SERVER HERE
 server.listen(port, () => {
-     console.log(`\n*** server listening on port ${port} ***\n`)
+     console.log(`\n*** CORS -enabled server listening on port ${port} ***\n`)
  })
