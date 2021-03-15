@@ -11,6 +11,22 @@ server.get("/api/users", async (req, res) => {
     res.json({ users });
   } catch (err) {
     console.log(err);
+    res.status(500).json({ error: err });
+  }
+});
+
+server.get("/api/users/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await Users.findById(id);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ message: "bad id" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
   }
 });
 
@@ -25,21 +41,5 @@ server.put("/api/users", async (req, res) => {
     res.status(500).json({ error: err });
   }
 });
-
-/* server.put("/api/dogs/:id", async (req, res) => {
-  const { id } = req.params;
-  const dog = req.body;
-  try {
-    const updatedDog = await Dog.update(id, dog);
-    if (updatedDog) {
-      res.json(updatedDog);
-    } else {
-      res.status(404).json({ messsage: "bad id" });
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: err });
-  }
-}); */
 
 module.exports = server; // EXPORT YOUR SERVER instead of {}
