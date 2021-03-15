@@ -30,6 +30,22 @@ server.get("/api/users/:id", async (req, res) => {
   }
 });
 
+server.put("/api/users/:id", async (req, res) => {
+    const { id } = req.params;
+    const changes = req.body;
+    try {
+      const user = await Users.update(id, changes);
+      if (user) {
+        res.json(user);
+      } else {
+        res.status(404).json({ message: "bad id" });
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: err });
+    }
+  });
+
 server.post("/api/users", async (req, res) => {
   const newUser = req.body;
 
