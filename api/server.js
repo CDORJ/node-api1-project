@@ -42,4 +42,19 @@ server.put("/api/users", async (req, res) => {
   }
 });
 
+server.delete("/api/users/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await Users.remove(id);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ message: "bad id" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+});
+
 module.exports = server; // EXPORT YOUR SERVER instead of {}
