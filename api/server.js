@@ -11,7 +11,9 @@ server.get("/api/users", async (req, res) => {
     res.json({ users });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: err });
+    res
+      .status(500)
+      .json({ message: "The users information could not be retrieved" });
   }
 });
 
@@ -22,27 +24,39 @@ server.get("/api/users/:id", async (req, res) => {
     if (user) {
       res.json(user);
     } else {
-      res.status(404).json({ message: "bad id" });
+      res
+        .status(404)
+        .json({ message: "The user with the specified ID does not exist" });
     }
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: err });
+    res
+      .status(500)
+      .json({ message: "The user information could not be retrieved" });
   }
 });
 
 server.put("/api/users/:id", async (req, res) => {
   const { id } = req.params;
   const changes = req.body;
-  try {
-    const user = await Users.update(id, changes);
-    if (user) {
-      res.json(user);
-    } else {
-      res.status(404).json({ message: "bad id" });
+  if (!changes.name || !changes.bio) {
+    res
+      .status(400)
+      .json({ message: "Please provide name and bio for the user" });
+  } else {
+    try {
+      const user = await Users.update(id, changes);
+      if (user) {
+        res.json(user);
+      } else {
+        res
+          .status(404)
+          .json({ message: "The user with the specified ID does not exist" });
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "The user information could not be modified" });
     }
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: err });
   }
 });
 
@@ -54,11 +68,13 @@ server.post("/api/users", async (req, res) => {
       .json({ message: "Please provide name and bio for the user" });
   } else {
     try {
-      await Users.insert(newUser);
-      res.json(newUser);
+      const fullNewUser = await Users.insert(newUser);
+      res.status(201).json(fullNewUser);
     } catch (err) {
       console.log(err);
-      res.status(500).json({ error: err });
+      res.status(500).json({
+        message: "There was an error while saving the user to the database",
+      });
     }
   }
 });
@@ -70,11 +86,13 @@ server.delete("/api/users/:id", async (req, res) => {
     if (user) {
       res.json(user);
     } else {
-      res.status(404).json({ message: "bad id" });
+      res
+        .status(404)
+        .json({ message: "The user with the specified ID does not exist" });
     }
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: err });
+    res.status(500).json({ message: "The user could not be removed" });
   }
 });
 
