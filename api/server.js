@@ -30,7 +30,7 @@ server.get("/api/users/:id", async (req, res) => {
   }
 });
 
-server.put("/api/users", async (req, res) => {
+server.post("/api/users", async (req, res) => {
   const newUser = req.body;
 
   try {
