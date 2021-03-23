@@ -37,8 +37,8 @@ Use Node.js and Express to build an API that performs CRUD operations on users.
 
 Add the code necessary in `index.js` and `api/server.js` to create a Web API and implement the following _endpoints_:
 
-| Method   | URL            | Description                                                                                            |
-| -------- | -------------- | ------------------------------------------------------------------------------------------------------ |
+| Method  | URL            | Description                                                                                            |
+| ------- | -------------- | ------------------------------------------------------------------------------------------------------ |
 | POST✔️   | /api/users     | Creates a user using the information sent inside the `request body`.                                   |
 | GET✔️    | /api/users     | Returns an array users.                                                                                |
 | GET✔️    | /api/users/:id | Returns the user object with the specified `id`.                                                       |
