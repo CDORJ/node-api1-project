@@ -21,4 +21,15 @@ server.get("/api/users", async (req, res) => {
   }
 });
 
+server.post("/api/users", async (req, res) => {
+  const newUserDetails = req.body;
+
+  if (!newUserDetails.name || !newUserDetails.bio) {
+    res.status(400).send({ message: "Invalid user. Name and Bio required." });
+  } else {
+    const newUser = await users.insert(newUserDetails);
+    res.status(200).send(newUser);
+  }
+});
+
 module.exports = server; // EXPORT YOUR SERVER instead of {}
