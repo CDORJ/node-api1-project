@@ -43,4 +43,17 @@ server.get("/api/users/:id", async (req, res) => {
   }
 });
 
+server.delete("/api/users/:id", async (req, res) => {
+  const { id } = req.params;
+  const deletedUser = await users.remove(id);
+
+  if (deletedUser === null) {
+    res.status(404).send({ message: `Invalid ID. User not found.` });
+  } else {
+    res.status(200).send({
+      message: `${deletedUser.name} has been successfully removed from the database.`,
+    });
+  }
+});
+
 module.exports = server; // EXPORT YOUR SERVER instead of {}
