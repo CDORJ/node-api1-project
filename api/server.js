@@ -32,4 +32,15 @@ server.post("/api/users", async (req, res) => {
   }
 });
 
+server.get("/api/users/:id", async (req, res) => {
+  const { id } = req.params;
+  const specificUser = await users.findById(id);
+
+  if (specificUser === undefined) {
+    res.status(404).send({ message: "Invalid ID. User not found." });
+  } else {
+    res.status(200).send(specificUser);
+  }
+});
+
 module.exports = server; // EXPORT YOUR SERVER instead of {}
