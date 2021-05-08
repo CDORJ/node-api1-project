@@ -9,15 +9,15 @@ server.use(express.json());
 server.get("/", (req, res) => {
   res
     .status(200)
-    .send({ message: "The server is up and running successfully." });
+    .json({ message: "The server is up and running successfully." });
 });
 
 server.get("/api/users", async (req, res) => {
   const listOfUsers = await users.find();
   if (listOfUsers.length < 1) {
-    res.status(200).send({ message: "There are no users in the database." });
+    res.status(200).json({ message: "There are no users in the database." });
   } else {
-    res.status(200).send(listOfUsers);
+    res.status(200).json(listOfUsers);
   }
 });
 
@@ -25,10 +25,10 @@ server.post("/api/users", async (req, res) => {
   const newUserDetails = req.body;
 
   if (!newUserDetails.name || !newUserDetails.bio) {
-    res.status(400).send({ message: "Invalid user. Name and Bio required." });
+    res.status(400).json({ message: "Invalid user. Name and Bio required." });
   } else {
     const newUser = await users.insert(newUserDetails);
-    res.status(200).send(newUser);
+    res.status(200).json(newUser);
   }
 });
 
@@ -37,9 +37,9 @@ server.get("/api/users/:id", async (req, res) => {
   const specificUser = await users.findById(id);
 
   if (specificUser === undefined) {
-    res.status(404).send({ message: "Invalid ID. User not found." });
+    res.status(404).json({ message: "Invalid ID. User not found." });
   } else {
-    res.status(200).send(specificUser);
+    res.status(200).json(specificUser);
   }
 });
 
@@ -48,9 +48,9 @@ server.delete("/api/users/:id", async (req, res) => {
   const deletedUser = await users.remove(id);
 
   if (deletedUser === null) {
-    res.status(404).send({ message: `Invalid ID. User not found.` });
+    res.status(404).json({ message: `Invalid ID. User not found.` });
   } else {
-    res.status(200).send({
+    res.status(200).json({
       message: `${deletedUser.name} has been successfully removed from the database.`,
     });
   }
